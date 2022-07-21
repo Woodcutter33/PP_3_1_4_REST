@@ -21,20 +21,28 @@ public class User implements UserDetails {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "firstName")
+    private String firstName;
 
-    @Column(name = "surname")
-    private String surname;
+    @Column(name = "lastName")
+    private String lastName;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "age")
+    private int age;
 
     @Column(name = "email")
-    private String email;
+    private String username;
 
     @Column(name = "password")
     private String password;
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     @ManyToMany
     @JoinTable(
@@ -44,21 +52,25 @@ public class User implements UserDetails {
     )
     private Set<Role> roles;
 
-    public User(String name, String surname, String username, String email, String password) {
-        this.name = name;
-        this.surname = surname;
+    public User(String firstName, String lastName, int age, String username, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
         this.username = username;
-        this.email = email;
         this.password = password;
     }
 
     public User() {
     }
 
-    public void addRole(Role role) {
-        roles.add(role);
+    public StringBuilder showRole() {
+        StringBuilder rs = new StringBuilder();
+        User user = new User();
+        for (int i = 0; i < user.getRoles().size(); i++) {
+            rs.append(user.getRoles()).substring(4);
+        }
+        return rs;
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -95,11 +107,11 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return name.equals(user.name) && surname.equals(user.surname) && username.equals(user.username) && email.equals(user.email) && password.equals(user.password) && roles.equals(user.roles);
+        return Objects.equals(id, user.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname, username, email, password, roles);
+        return Objects.hash(id);
     }
 }

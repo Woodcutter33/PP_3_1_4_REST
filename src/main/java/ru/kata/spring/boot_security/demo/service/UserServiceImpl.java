@@ -46,6 +46,13 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
+    @Override
+    @Transactional
+    public void update(User user, Long id) {
+        user.setId(id);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+    }
 
     @Override
     @Transactional
@@ -53,17 +60,15 @@ public class UserServiceImpl implements UserService {
         roleRepository.save(role);
     }
 
-    @Override
-    @Transactional
-    public void update(User user) {
-        userRepository.save(user);
-    }
-
-    @Override
+       @Override
     @Transactional
     public void delete(Long id) {
         userRepository.deleteById(id);
     }
+
+//    public Set<Role> getAllRoles() {
+//        return roleRepository.findAll();
+//    }
 
     @Override
     @Transactional
