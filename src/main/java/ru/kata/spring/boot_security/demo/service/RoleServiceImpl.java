@@ -35,9 +35,4 @@ public class RoleServiceImpl implements RoleService {
         query.setParameter("name", name);
         return query.getResultStream().collect(Collectors.toSet());
     }
-
-//    @Override
-//    public void saveRole(Role role) {
-//
-//    }
 }

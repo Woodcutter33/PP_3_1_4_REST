@@ -63,15 +63,6 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public StringBuilder showRole() {
-        StringBuilder rs = new StringBuilder();
-        User user = new User();
-        for (int i = 0; i < user.getRoles().size(); i++) {
-            rs.append(user.getRoles()).substring(4);
-        }
-        return rs;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;

@@ -17,8 +17,6 @@ public interface UserService extends UserDetailsService {
     @Transactional
     void update(User user, Long id);
 
-    void saveRole(Role role);
-
     void delete(Long id);
 
     User findByUsername(String username);

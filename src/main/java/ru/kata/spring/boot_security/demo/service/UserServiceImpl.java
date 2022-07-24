@@ -18,14 +18,12 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -54,21 +52,11 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-    @Override
-    @Transactional
-    public void saveRole(Role role) {
-        roleRepository.save(role);
-    }
-
        @Override
     @Transactional
     public void delete(Long id) {
         userRepository.deleteById(id);
     }
-
-//    public Set<Role> getAllRoles() {
-//        return roleRepository.findAll();
-//    }
 
     @Override
     @Transactional

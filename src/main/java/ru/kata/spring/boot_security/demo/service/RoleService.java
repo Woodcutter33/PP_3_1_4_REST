@@ -9,5 +9,4 @@ public interface RoleService {
 
     Set<Role> getByName(String name);
 
-//    void saveRole(Role role);
 }
