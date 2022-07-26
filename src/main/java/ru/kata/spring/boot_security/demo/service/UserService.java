@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 public interface UserService extends UserDetailsService {
-    List<User> index();
+    List<User> getAll();
 
     User showUserById(Long id);
 
