@@ -22,7 +22,7 @@ public class AdminRESTController {
         this.roleService = roleService;
     }
 
-
+// тестово вызываю 1 юзера
     @GetMapping()
     public User getAllUser() {
         return userService.showUserById(1L);
