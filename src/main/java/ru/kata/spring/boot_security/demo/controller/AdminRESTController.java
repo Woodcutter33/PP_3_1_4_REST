@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
@@ -14,44 +15,33 @@ import java.util.List;
 public class AdminRESTController {
 
     private final UserService userService;
-    private final RoleService roleService;
+//    private final RoleService roleService;
 
     @Autowired
-    public AdminRESTController(UserService userService, RoleService roleService) {
+    public AdminRESTController(UserService userService) {
         this.userService = userService;
-        this.roleService = roleService;
     }
 
-// тестово вызываю 1 юзера
     @GetMapping()
-    public User getAllUser() {
-        return userService.showUserById(1L);
+    public ResponseEntity<List<User>> getAllUser() {
+        return ResponseEntity.ok(userService.getAll());
     }
-//    @GetMapping()
-//    public List<User> getAllUser() {
-//        List<User> allUsers = userService.getAll();
-//        return allUsers;
-//    }
 
+    @PostMapping()
+    public ResponseEntity<List<User>> createUser(@RequestBody User user) {
+        userService.saveOrUpdate(user, user.getRoles());
+        return ResponseEntity.ok(userService.getAll());
+    }
 
+    @PutMapping()
+    public ResponseEntity<List<User>> updateUser(@RequestBody User user) {
+        userService.saveOrUpdate(user, user.getRoles());
+        return ResponseEntity.ok(userService.getAll());
+    }
 
-//    @PostMapping("/new")
-//    public User createUser(@RequestBody User user) {
-//        userService.save(user);
-//        return user;
-//    }
-
-//    @PatchMapping("/edit/{id}")
-//    public String updateUser(@ModelAttribute("user") User user, @PathVariable("id") Long id,
-//                             @RequestParam(value = "nameRoles", required = false) String roles) {
-//        user.setRoles(roleService.getByName(roles));
-//        userService.update(user, id);
-//        return "redirect:/admin";
-//    }
-//
-//    @DeleteMapping("/delete/{id}")
-//    public String deleteUser(@PathVariable("id") long id) {
-//        userService.delete(id);
-//        return "redirect:/admin";
-//    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<List<User>> deleteUser(@PathVariable("id") long id) {
+        userService.delete(id);
+        return ResponseEntity.ok(userService.getAll());
+    }
 }

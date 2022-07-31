@@ -6,20 +6,25 @@ import ru.kata.spring.boot_security.demo.model.User;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 public interface UserService extends UserDetailsService {
+
     List<User> getAll();
+
+    Set<Role> getAllRole();
 
     User showUserById(Long id);
 
-    User save(User user);
+//    User save(User user);
 
-    @Transactional
-    void update(User user, Long id);
+
+//    void update(User user, Long id);
 
     void delete(Long id);
 
     User findByUsername(String username);
 
+    void saveOrUpdate(User user, Set<Role> roles);
 }
 

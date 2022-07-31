@@ -1,14 +1,16 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
+
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -24,32 +26,27 @@ public class AdminController {
     }
 
     @GetMapping()
-    public String getAllUser(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        String username = userDetails.getUsername();
-        model.addAttribute("users", userService.index());
-        model.addAttribute("user", userService.findByUsername(username));
+    public String getAllUser(Model model) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("users", userService.getAll());
         model.addAttribute("roles", roleService.getAllRoles());
-        model.addAttribute("newUser", new User());
+        model.addAttribute("principal", user);
         return "admin";
     }
 
-    @PostMapping("/new")
-    public String createUser(@ModelAttribute("user") User user,
-                             @RequestParam(value = "nameRoles", required = false) String roles) {
-        user.setRoles(roleService.getByName(roles));
-        userService.save(user);
+    @PostMapping("admin/new")
+    public String createUser(User user, @RequestParam("roles") Set<Role> roles) {
+        userService.saveOrUpdate(user, roles);
         return "redirect:/admin";
     }
 
-    @PatchMapping("/edit/{id}")
-    public String updateUser(@ModelAttribute("user") User user, @PathVariable("id") Long id,
-                             @RequestParam(value = "nameRoles", required = false) String roles) {
-        user.setRoles(roleService.getByName(roles));
-        userService.update(user, id);
+    @PostMapping("admin/edit/")
+    public String updateUser(@ModelAttribute("user") User user, @RequestParam("roles") Set<Role> roles) {
+        userService.saveOrUpdate(user, roles);
         return "redirect:/admin";
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("delete/{id}")
     public String deleteUser(@PathVariable("id") long id) {
         userService.delete(id);
         return "redirect:/admin";

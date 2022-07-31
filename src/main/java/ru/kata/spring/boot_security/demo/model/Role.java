@@ -1,6 +1,9 @@
 package ru.kata.spring.boot_security.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -9,6 +12,8 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Table(name = "roles")
@@ -21,11 +26,11 @@ public class Role implements GrantedAuthority {
     @Column(name = "name")
     private String name;
 
+
     @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
     private Set<User> users;
 
-    public Role() {
-    }
 
     public Role(String name) {
         this.name = name;

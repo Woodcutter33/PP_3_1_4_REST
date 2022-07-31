@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +15,8 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "users")
 public class User implements UserDetails {
 
@@ -36,13 +40,6 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-//    public void setRoles(Set<Role> roles) {
-//        this.roles = roles;
-//    }
 
     @ManyToMany
     @JoinTable(
@@ -50,17 +47,16 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @Column(name = "roles")
     private Set<Role> roles;
 
-    public User(String firstName, String lastName, int age, String username, String password) {
+    public User(String firstName, String lastName, int age, String username, String password, Set<Role> roles) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.username = username;
         this.password = password;
-    }
-
-    public User() {
+        this.roles = roles;
     }
 
     @Override
@@ -71,6 +67,14 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public String getRolesList() {
+        StringBuilder sb = new StringBuilder();
+        for (Role role : this.getRoles()) {
+            sb.append(role.getName());
+        }
+        return sb.toString();
     }
 
     @Override
