@@ -47,29 +47,12 @@ public class UserServiceImpl implements UserService {
     public User showUserById(Long id) {
         return userRepository.getById(id);
     }
-//закомментить
-//    @Override
-//    @Transactional
-//    public User save(User user) {
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        return userRepository.save(user);
-//    }
-    //
 
     public void saveOrUpdate(User user, Set<Role> roles) {
         user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
-
-
-//    @Override
-//    @Transactional
-//    public void update(User user, Long id) {
-//        user.setId(id);
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        userRepository.save(user);
-//    }
 
     @Override
     @Transactional

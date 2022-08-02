@@ -35,5 +35,3 @@ formEdit.addEventListener('submit', e => {
     $("#ModalEdit").modal("hide");
     formEdit.reset();
 })
-
-

@@ -26,16 +26,16 @@ public class User implements UserDetails, Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "firstName")
-    private String firstName;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "lastName")
-    private String lastName;
+    @Column(name = "lastname")
+    private String lastname;
 
     @Column(name = "age")
     private int age;
 
-    @Column(name = "email")
+    @Column(name = "username")
     private String username;
 
     @Column(name = "password")
@@ -51,9 +51,9 @@ public class User implements UserDetails, Serializable {
     @Column(name = "roles")
     private Set<Role> roles;
 
-    public User(String firstName, String lastName, int age, String username, String password, Set<Role> roles) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public User(String name, String lastname, int age, String username, String password, Set<Role> roles) {
+        this.name = name;
+        this.lastname = lastname;
         this.age = age;
         this.username = username;
         this.password = password;
